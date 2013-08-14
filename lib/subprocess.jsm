@@ -1,5 +1,3 @@
-// -*- coding: utf-8 -*-
-// vim: et:ts=4:sw=4:sts=4:ft=javascript
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -370,12 +368,12 @@ function getCommandStr(command) {
         let file = Cc[NS_LOCAL_FILE].createInstance(Ci.nsIFile);
         file.initWithPath(command);
         if (! (file.isExecutable() && file.isFile()))
-            throw("File '"+command+"' is not an executable file");
+            throw new Error("File '"+command+"' is not an executable file");
         commandStr = command;
     }
     else {
         if (! (command.isExecutable() && command.isFile()))
-            throw("File '"+command.path+"' is not an executable file");
+            throw new Error("File '"+command.path+"' is not an executable file");
         commandStr = command.path;
     }
 
@@ -388,12 +386,12 @@ function getWorkDir(workdir) {
         let file = Cc[NS_LOCAL_FILE].createInstance(Ci.nsIFile);
         file.initWithPath(workdir);
         if (! (file.isDirectory()))
-            throw("Directory '"+workdir+"' does not exist");
+            throw new Error("Directory '"+workdir+"' does not exist");
         workdirStr = workdir;
     }
     else if (workdir) {
         if (! workdir.isDirectory())
-            throw("Directory '"+workdir.path+"' does not exist");
+            throw new Error("Directory '"+workdir.path+"' does not exist");
         workdirStr = workdir.path;
     }
     return workdirStr;
@@ -775,7 +773,7 @@ function subprocess_win32(options) {
                            si.address(),    // (in) startup information
                            pi.address()     // (out) process information
         ))
-            throw("Fatal - Could not launch subprocess '"+command+"'");
+            throw new Error("Fatal - Could not launch subprocess '"+command+"'");
 
         // Close any unnecessary handles.
         if (!CloseHandle(pi.hThread))
@@ -1273,7 +1271,7 @@ function subprocess_unix(options) {
             close(_out[1]);
             close(_in[0]);
             close(_in[1]);
-            throw("Fatal - failed to create subprocess '"+command+"'");
+            throw new Error("Fatal - failed to create subprocess '"+command+"'");
         }
 
         return pid;
